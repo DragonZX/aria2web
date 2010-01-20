@@ -115,7 +115,15 @@ Ext.onReady(function(){
               	tooltip: 'Allows you to change the global options for all downloads',
                 cls:'x-btn-text-icon',
                 handler: function() { openActionDialog(this, 'globalOptions') }
-              }
+              },'-',
+				{	// LOGOUT
+					xtype: "tbbutton",
+					id: 'tb_logout',
+					icon: 'images/_logout.png',
+					tooltip: 'Logout',
+					cls:'x-btn-icon',
+					handler: function() { document.location.href='index.php?logout'; }
+				},
            ]);
     function onItemToggle(item, pressed){
     	

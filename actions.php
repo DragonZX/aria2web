@@ -1,7 +1,17 @@
 <?php
 defined( '_ARIA2WEB' ) or die();
+/**
+* @version		$Id: $
+* @package	aria2web
+* @copyright	Copyright (C) 2010 soeren. All rights reserved.
+* @license		GNU/GPL, see LICENSE.php
+* Aria2Web is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* http://sourceforge.net/projects/aria2web/
+*/
 
- include('config.php');
 require_once 'XML/RPC2/Client.php';
 
 $aria2_url = 'http://';

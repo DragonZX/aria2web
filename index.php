@@ -1,8 +1,26 @@
 <?php 
+/**
+* @version		$Id: $
+* @package	aria2web
+* @copyright	Copyright (C) 2010 soeren. All rights reserved.
+* @license		GNU/GPL, see LICENSE.php
+* Aria2Web is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* http://sourceforge.net/projects/aria2web/
+*/
 define( '_ARIA2WEB', 1 );
 
-require_once( dirname(__FILE__).'/functions.php');
-require_once( dirname(__FILE__).'/actions.php');
+session_name('aria2web');
+session_start();
+
+require_once('config.php');
+require_once('auth.php');
+
+
+require_once( 'functions.php');
+require_once( 'actions.php');
 ?>
 <html>
 <head>
@@ -42,10 +60,10 @@ if( $aria2_mode == 'local' ) {
 }
 
 try {
-    //$result = $client->aria2_getVersion(); 
-    //if($result['version']) {
-    //	$bottomtext = 'Connected to aria2 <span style="font-weight: bold;">version '  . $result['version'].'</span>. Enabled features: '.implode(', ', $result['enabledFeatures'] );
-    //}
+    $result = $client->aria2_getVersion(); 
+    if($result['version']) {
+    	$bottomtext = 'Connected to aria2 <span style="font-weight: bold;">version '  . $result['version'].'</span>. Enabled features: '.implode(', ', $result['enabledFeatures'] );
+    }
    
 } catch (XML_RPC2_FaultException $e) {
     // The XMLRPC server returns a XMLRPC error
