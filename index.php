@@ -11,6 +11,8 @@
 * http://sourceforge.net/projects/aria2web/
 */
 define( '_ARIA2WEB', 1 );
+define( '_ARIA2WEB_VERSION', '0.1' );
+define( '_ARIA2WEB_HOMEPAGE', 'https://sourceforge.net/projects/aria2web/' );
 
 session_name('aria2web');
 session_start();
@@ -39,7 +41,8 @@ require_once( 'actions.php');
 <script type="text/javascript">var aria2web_mode="<?php echo $aria2_mode ?>";</script>
 </head>
 <body>
-<div id="header"><h1 style="float: left;">Aria2c Webfrontend</h1><img align="right" src="images/logo.png" alt="aria2web logo2" />
+<div id="header"><h1 style="float: left;">Aria2c Webfrontend</h1>
+<a href="<?php echo _ARIA2WEB_HOMEPAGE ?>" title="Visit the Aria2Web Homepage" target="_blank"><img align="right" src="images/logo.png" alt="aria2web logo2" border="0" /></a>
  <br /><br style="clear: left;" /><p>Controlling <a href="http://aria2.sourceforge.net/" target="_blank">Aria2</a> over the network.</p>
  </div>
 <?php 
