@@ -283,6 +283,7 @@ Ext.onReady(function(){
        renderTo:'downloads-grid',
        items: [{
     	   region: 'north',
+    	   height: 125,
     	   contentEl: "header"
        }, {
     	   xtype: 'grid',
