@@ -1,7 +1,7 @@
 <?php
 defined( '_ARIA2WEB' ) or die();
 /**
-* @version		$Id: $
+* @version		$Id$
 * @package	aria2web
 * @copyright	Copyright (C) 2010 soeren. All rights reserved.
 * @license		GNU/GPL, see LICENSE.php
