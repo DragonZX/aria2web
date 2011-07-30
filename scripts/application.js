@@ -108,7 +108,7 @@ Ext.onReady(function(){
                   text: 'Auto-Refresh',
                   enableToggle: true,
                   id: 'btn_autorefresh',
-                  pressed: false
+                  pressed: true
               },
               
               '-',
@@ -120,7 +120,7 @@ Ext.onReady(function(){
               	tooltip: 'Allows you to change the global options for all downloads',
                 cls:'x-btn-text-icon',
                 handler: function() { openActionDialog(this, 'globalOptions') }
-              },'-',
+              },/* '-',
 				{	// LOGOUT
 					xtype: "tbbutton",
 					id: 'tb_logout',
@@ -128,7 +128,7 @@ Ext.onReady(function(){
 					tooltip: 'Logout',
 					cls:'x-btn-icon',
 					handler: function() { document.location.href='index.php?logout'; }
-				},
+				},*/
            ]);
     function onItemToggle(item, pressed){
     	
@@ -161,45 +161,56 @@ Ext.onReady(function(){
            id: 'gridcm', // id assigned so we can apply custom css (e.g. .x-grid-col-topic b { color:#333 })
            header: "GID",
            dataIndex: 'gid',
-           width: 30,
+           align:'right',
+           width: 50,
            //renderer: renderFileName,
            css: 'white-space:normal;'
-           
-        },{
-            header: "CompletedLength",
-            dataIndex: 'completedLength',
-            width: 120
          },{
            header: "TotalLength",
            dataIndex: 'totalLength',
+           align:'right',
            width: 120
+        },{
+            header: "CompletedLength",
+            dataIndex: 'completedLength',
+            align:'right',
+            width: 120
         },{
            header: "Download Speed",
            dataIndex: 'downloadSpeed',
-           width: 100
+           align:'right',
+           width: 120
         },{
             header: "Upload Speed",
             dataIndex: 'uploadSpeed',
+            align:'right',
+            hidden: true,
+            hideable: false,
             width: 100
          },{
              header: "estimated Time",
              dataIndex: 'estimatedTime',
-             width: 100
+             align:'right',
+             width: 150
           },{
              header: "# Connections",
              dataIndex: 'connections',
-             width: 60
+             align:'right',
+             width: 100
           },{
               header: "Status",
               dataIndex: 'status',
-              width: 150,
-              align: 'right'
+              resizable: true,
+              width: 200,
+              //align: 'right'
            },{
-              header: "# Pieces",
-              dataIndex: 'numPieces',
-              width: 60
+              header: "File name",
+              dataIndex: 'bitfield',
+              resizable: true,
+              width: 400
            },  
-        { dataIndex: 'bitfield', hidden: true, hideable: false },
+        {dataIndex: 'numPieces', hidden: true, hideable: false },
+        //{dataIndex: 'bitfield', hidden: true, hideable: false },
         {dataIndex: 'infohash', hidden: true, hideable: false },
         {dataIndex: 'numSeeders', hidden: true, hideable: false },
         {dataIndex: 'pieceLength', hidden: true, hideable: false },
@@ -209,7 +220,7 @@ Ext.onReady(function(){
         ]);
 
     // by default columns are sortable
-    cm.defaultSortable = true;
+    //cm.defaultSortable = true;
 
     // The Quicktips are used for the toolbar and Tree mouseover tooltips!
 	Ext.QuickTips.init();
@@ -296,7 +307,7 @@ Ext.onReady(function(){
        renderTo:'downloads-grid',
        items: [{
     	   region: 'north',
-    	   height: 125,
+    	   height: 35,
     	   contentEl: "header"
        }, {
     	   xtype: 'grid',
@@ -318,7 +329,7 @@ Ext.onReady(function(){
 	        width:'80%',
 			split: true,
 			region: 'center'
-       },{
+       },/*{
 			id: 'detailPanel',
 			title: "Details",
 	        width:'20%',
@@ -328,11 +339,11 @@ Ext.onReady(function(){
 				padding: '7px'
 			}
        //,html: 'Please select a file to see additional details.'
-		},{
+		},*/{
 			region: "south",
 			contentEl: "bottom" 
 		}]
-
+                                                                                                             
     });
     function handleRowClick(sm, rowIndex, r) {
     	
@@ -366,8 +377,8 @@ Ext.onReady(function(){
 									return false; 
 								}
 
-				    			var detailPanel = Ext.getCmp('detailPanel');
-					    		fileTpl.overwrite(detailPanel.body, json);
+				    			//var detailPanel = Ext.getCmp('detailPanel');
+					    		//fileTpl.overwrite(detailPanel.body, json);
 							}
     					},
     				   params: { 

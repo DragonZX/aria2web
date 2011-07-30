@@ -34,58 +34,69 @@ switch( $action ) {
 	// Retrieves all files in the download queue
 	case 'tellActive':
 		$totalCount = 0;
-		$activeArr = $waitingArr = array();
 		$items = array();
 		try {
-			$result = $client->system_multicall( array(
-					array('methodName' => 'aria2.tellActive',
-								'params' => ''
-					),
-					array('methodName' => 'aria2.tellWaiting',
-								'params' => array($offset, $num )
-					)								
-					) );
+			$result = $client->aria2_tellActive('');
 		}
 		catch( XML_RPC2_FaultException $e ) {
 			$msg = 'Exception: ' . $e->getFaultString().' (ErrorCode '. $e->getFaultCode() . ")aria2_tellStopped($offset, $num );";
-			$success = false;	
+			$success = false;
 			sendResult($success, $msg);
 			exit;
 		}	
 		catch(XML_RPC2_CurlException $e ) {
 		}
-		if( !empty($result) ) {
-			$activeArr = $result[0];
-			$waitingArr = $result[1];
-		}
-		
-		if( !empty($activeArr[0])) {
-			foreach( $activeArr as $files ) {
-				foreach( $files as $file ) {
-					$totalCount ++;
-					$items[]  = $file;					
-				}
-			}			
-		}
-		if( !empty($waitingArr[0])) {
-			foreach( $waitingArr as $files ) {
-				foreach( $files as $file ) {
-					$totalCount ++;
-					$items[]  = $file;					
-				}
+		if( !empty($result)) {
+			foreach( $result as $file ) {
+				$totalCount ++;
+				$items[]  = $file;
 			}
 		}
-		foreach( $items as $num => $item) {
+		try {
+			$offset = intval($offset);
+			$num = intval($num);
+			$result = $client->aria2_tellWaiting($offset,$num);
+		}
+		catch( XML_RPC2_FaultException $e ) {
+			$msg = 'Exception: ' . $e->getFaultString().' (ErrorCode '. $e->getFaultCode() . ")aria2_tellStopped($offset, $num );";
+			$success = false;
+			sendResult($success, $msg);
+			exit;
+		}	
+		catch(XML_RPC2_CurlException $e ) {
+		}
+		if( !empty($result)) {
+			foreach( $result as $file ) {
+				$totalCount ++;
+				$items[]  = $file;
+			}
+		}
+		$n=0;
+		foreach( $items as $item) {
 			if( $item['completedLength'] != 0 ) {
-				$items[$num]['completedPercentage'] = ' ('.round( ($item['completedLength'] / $item['totalLength'])*100 , 2) .'%)';
+				$completedPercentage = ' ('.round( ($item['completedLength'] / $item['totalLength'])*100 , 2) .'%)';
 			} else {
-				$items[$num]['completedPercentage'] = '';
+				$completedPercentage = '(0%)';
 			}
-			$items[$num]['completedLength'] = parse_file_size($item['completedLength']).$items[$num]['completedPercentage'];
-			$items[$num]['totalLength'] = parse_file_size($item['totalLength']);
-			$items[$num]['downloadSpeed'] = parse_file_size($item['downloadSpeed']).'/s';
-			$items[$num]['uploadSpeed'] = parse_file_size($item['uploadSpeed']).'/s';
-			$items[$num]['estimatedTime'] = calc_remaining_time( $item['downloadSpeed'], $item['totalLength']-$item['completedLength'] );
+			$items[$n]['completedLength'] = parse_file_size($item['completedLength']).$completedPercentage;
+			$items[$n]['totalLength'] = parse_file_size($item['totalLength']);
+			$items[$n]['downloadSpeed'] = parse_file_size($item['downloadSpeed']).'/s';
+			$items[$n]['uploadSpeed'] = parse_file_size($item['uploadSpeed']).'/s';
+			$items[$n]['estimatedTime'] = calc_remaining_time( $item['downloadSpeed'], $item['totalLength']-$item['completedLength'] );
+			try {
+				$fresult = $client->aria2_getFiles( $items[$n]['gid'] );
+			}
+			catch (XML_RPC2_FaultException $e) {
+				sendResult(false,  'Exception: ' . $e->getFaultString().' (ErrorCode '. $e->getFaultCode() . ')' );
+				//exit;
+			}
+			catch( XML_RPC2_CurlException $e ) {
+				sendResult(false, 'Exception: ' . $e->getMessage() . ')' );
+				//exit;
+			}
+			$ffile = $fresult[0]['path']; //TODO
+			$items[$n]['bitfield'] = basename($ffile);
+			$n ++;
 		}
 		
 		$return = array( 'totalCount' => $totalCount,
@@ -126,7 +137,7 @@ switch( $action ) {
 			if( !empty($result)) {
 				foreach( $result as $file ) {
 						switch( $file['errorCode'] ) {
-							case 0: $status = 'download successful'; break;
+							case 0:$status = 'download successfully'; break;
 							case 1:$status = 'unknown error occured'; break;
 							case 2:$status = 'time out occured'; break;
 							case 3:$status = 'resource not found'; break;
@@ -134,7 +145,27 @@ switch( $action ) {
 							case 5:$status = 'download aborted, because download speed was too slow'; break;
 							case 6:$status = 'network problem occured'; break;
 						}
-						$file['status'] .= ', '. $status; 						
+						if( $file['completedLength'] != 0 ) {
+							$completedPercentage = ' ('.round( ($file['completedLength'] / $file['totalLength'])*100 , 2) .'%)';
+						} else {
+							$completedPercentage = '(0%)';
+						}
+						$file['status'] .= ', '. $status;
+						$file['completedLength'] = parse_file_size($file['completedLength']).$completedPercentage;
+						$file['totalLength'] = parse_file_size($file['totalLength']);
+						try {
+							$fresult = $client->aria2_getFiles( $file['gid'] );
+						}
+						catch (XML_RPC2_FaultException $e) {
+							sendResult(false,  'Exception: ' . $e->getFaultString().' (ErrorCode '. $e->getFaultCode() . ')' );
+							//exit;
+						}
+						catch( XML_RPC2_CurlException $e ) {
+							sendResult(false, 'Exception: ' . $e->getMessage() . ')' );
+								//exit;
+						}
+						$ffile = $fresult[0]['path']; //TODO
+						$file['bitfield'] = basename($ffile);
 						$totalCount ++;
 						$items[] = $file;
 					}
@@ -160,10 +191,11 @@ switch( $action ) {
 		
 		$msg = 'No URI provided';
 		$success = true;
+		$fconn = $_POST['userfileconn'];
 		foreach($_POST['userfile'] as $url ) {
 			if( !empty($url)) {
 				try { 
-					$result = $client->aria2_addUri( array($url) );
+					$result = $client->aria2_addUri( array($url), array('max-connection-per-server' => $fconn) );
 					$msg = 'URI added';
 				}
 				catch (XML_RPC2_FaultException $e) {	

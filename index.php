@@ -27,8 +27,8 @@ require_once( 'actions.php');
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Aria2c Webfrontend</title>
-<link rel="shortcut icon" href="images/logo.ico">
+<title>Nikos storage download utility</title>
+<!-- <link rel="shortcut icon" href="images/logo.ico"> -->
 
 <link rel="stylesheet" type="text/css" href="scripts/extjs/resources/css/ext-all.css" />
 <link rel="stylesheet" type="text/css" href="styles/style.css" />
@@ -41,9 +41,7 @@ require_once( 'actions.php');
 <script type="text/javascript">var aria2web_mode="<?php echo $aria2_mode ?>";</script>
 </head>
 <body>
-<div id="header"><h1 style="float: left;">Aria2c Webfrontend</h1>
-<a href="<?php echo _ARIA2WEB_HOMEPAGE ?>" title="Visit the Aria2Web Homepage" target="_blank"><img align="right" src="images/logo.png" alt="aria2web logo2" border="0" /></a>
- <br /><br style="clear: left;" /><p>Controlling <a href="http://aria2.sourceforge.net/" target="_blank">Aria2</a> over the network.</p>
+<div id="header"><h1 style="float: left;">Nikos storage download utility</h1>
  </div>
 <?php 
 $bottomtext = 'No connection to an Aria2 instance established.';

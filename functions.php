@@ -199,11 +199,11 @@ function sendResult($success, $msg) {
  * @param int $precision
  * @return string
  */
-function parse_file_size($bytes, $precision = 2) {
+function parse_file_size($bytes, $precision = 1) {
     $units = array('B', 'KB', 'MB', 'GB', 'TB');
-    if( !is_float($bytes)) {
+    /*if( !is_float($bytes)) {
     	$bytes = (int)sprintf("%u", $bytes);
-    }
+    }*/
     $bytes = max($bytes, 0);
     $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
     $pow = min($pow, count($units) - 1);
@@ -211,12 +211,12 @@ function parse_file_size($bytes, $precision = 2) {
     $bytes /= pow(1024, $pow);
   
     return round($bytes, $precision) . ' ' . $units[$pow];
-} 
+}
 
 function calc_remaining_time( $speed, $totalsize ) {
 	if( $speed > 0 ) {
-		$remaining_time = (int)$totalsize / $speed;
-		if( $remaining_time > 60 ) {
+		$remaining_time = $totalsize / $speed;
+		if( $remaining_time > 10 ) {
 			return duration($remaining_time);
 		}
 	} else {

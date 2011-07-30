@@ -14,7 +14,7 @@
 $username = $aria2_parameters['xml_rpc_user'];
 $password = $aria2_parameters['xml_rpc_pass'];
 
-if(isset($_GET['logout'])) {
+/* if(isset($_GET['logout'])) {
     unset( $_SESSION['login'] );
     session_destroy();
 	session_regenerate_id();
@@ -50,4 +50,4 @@ else {
     header("Location: " . $_SERVER['PHP_SELF']);
 	exit;
   }
-}
+} */

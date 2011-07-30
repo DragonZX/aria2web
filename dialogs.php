@@ -23,15 +23,24 @@ switch( $action ) {
 		"frame": "true",
 		"items": [
 		<?php
-			for($i=0;$i<7;$i++) {
+			for($i=0;$i<10;$i++) {
 				echo '{
 					"xtype": "textfield",
-					"fieldLabel": "URL",
+					"fieldLabel": "URL '.($i+1).'",
 					"name": "userfile['.$i.']",
 					"width":275
 				}';
-				if( $i <6 ) echo ",\n";
+				//if( $i <9 ) echo ",\n";
+				echo ",\n";
 			}
+			echo '{
+					"xtype": "textfield",
+					"fieldLabel": "Connections per file",
+					"name": "userfileconn",
+					"value": 2,
+					"width": 60
+				}';
+				if( $i <9 ) echo ",\n";
 			?>
 			
 		],

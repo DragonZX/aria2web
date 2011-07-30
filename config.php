@@ -22,13 +22,15 @@ $aria2_parameters = array();
 
 // If aria2web is in local mode, it will try to start aria2c in XMl-RPC mode using the following additional parameters
 $aria2_parameters['xml_rpc_listen_port'] = 6800;
-$aria2_parameters['xml_rpc_username'] = 'test';
-$aria2_parameters['xml_rpc_password'] = 'test';
+$aria2_parameters['xml_rpc_username'] = '';
+$aria2_parameters['xml_rpc_password'] = '';
+$aria2_parameters['xml_rpc_user'] = '';
+$aria2_parameters['xml_rpc_pass'] = '';
 $aria2_parameters['xml_rpc_listen_all'] = 'true';
 $aria2_parameters['dir'] = '~/'; // The directory to store the downloaded file. 
-$aria2_parameters['log'] = '~/aria2.log'; // The location of the log file.
-$aria2_parameters['http_user']= ''; //Set HTTP user. This affects all URLs. 
-$aria2_parameters['http_passwd']= '';//Set HTTP password. This affects all URLs. 
+$aria2_parameters['log'] = '/var/log/aria2web.log'; // The location of the log file.
+//$aria2_parameters['http_user']= ''; //Set HTTP user. This affects all URLs. 
+//$aria2_parameters['http_passwd']= '';//Set HTTP password. This affects all URLs. 
 $aria2_parameters['load_cookies']= ''; //Load Cookies from FILE using the Firefox3 format (SQLite3) and the Mozilla/Firefox(1.x/2.x)/Netscape format. 
 $aria2_parameters['user_agent']= ''; //Set user agent for HTTP(S) downloads. Default: aria2/$VERSION, $VERSION is replaced by package version. 
 
